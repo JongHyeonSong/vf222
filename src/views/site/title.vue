@@ -49,6 +49,14 @@ export default {
       text: this.title,
     };
   },
+
+  //   methods: {
+  //   signInWIthGoogle() {
+  //     debugger;
+  //     this.dialog = true;
+  //   },
+  // },
+
   methods: {
     openDialog() {
       this.dialog = true;

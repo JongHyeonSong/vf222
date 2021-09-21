@@ -15,9 +15,19 @@ import {
   update,
 } from "firebase/database";
 import * as firebase from "firebase/database";
+
+import * as auth from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+
 // import * as dbs from "firebase/database";
 import Vue from "vue";
-
+import store from "../store";
 // const analytics = getAnalytics(app);
 
 const firebaseConfig = {
@@ -48,6 +58,7 @@ async function readObj(root) {
     console.error(err);
     throw "erro@@";
   });
+
   return snapshot?.exists() ? snapshot.val() : "";
 }
 
@@ -83,9 +94,67 @@ async function readObjRsp(domain, cb, erCb) {
   //   });
 }
 
+function LoginGoogle() {
+  const auth = getAuth();
+
+  const provider = new GoogleAuthProvider();
+  return signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+
+      return new Promise((res, rej) => {
+        res(user);
+      });
+      // ...
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
+}
+
+function signOutG() {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    });
+}
+
+!(function () {
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      store.commit("setFireUser", user);
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+  });
+})();
 Vue.prototype.$firebase_ = firebase;
 
 Vue.prototype.$firebase = {
+  LoginGoogle,
+  signOutG,
+  auth,
   readObjRsp,
   readObj,
   writeObj,

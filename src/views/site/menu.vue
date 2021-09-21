@@ -130,7 +130,7 @@ export default {
       (value) => !!value || "Required.",
       (value) => (value && value.length >= 3) || "Min 3 characters",
     ],
-    dialogItem: !false,
+    dialogItem: false,
     dialogSubItem: false,
     formItem: {
       title: "",
