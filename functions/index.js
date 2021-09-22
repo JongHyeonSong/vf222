@@ -4,10 +4,11 @@ const functions = require("firebase-functions");
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./key.json");
+// const { FieldValue, collection } = require("@firebase/firestore/dist/lite");
 
 const defaultApp = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: functions.config().admin.db_url, //"https://vue-mem-default-rtdb.firebaseio.com",
+  databaseURL: "https://vue-mem-default-rtdb.firebaseio.com", //functions.config().admin.db_url, //"https://vue-mem-default-rtdb.firebaseio.com",
 });
 
 // Take the text parameter passed to this HTTP endpoint and insert it into
@@ -45,6 +46,7 @@ exports.makeUppercase = functions.firestore
   });
 
 const db = admin.database();
+const fdb = admin.firestore();
 
 exports.createUser = functions.auth.user().onCreate((user) => {
   const { uid, email, displayName, photoURL } = user;
@@ -65,3 +67,53 @@ exports.deleteUser = functions.auth.user().onDelete((user) => {
   db.ref("happy").child(uid).set("zz");
   db.ref("users").child(uid).remove();
 });
+
+exports.documentWriteListener = functions.firestore
+  .document("boards/{documentUid}")
+  .onWrite((change, context) => {
+    console.log(33333333333);
+    if (!change.before.exists) {
+      // New document Created : add one to count
+      fdb
+        .collection("meta")
+        .doc("boards")
+        .update({ count: admin.firestore.FieldValue.increment(1) });
+    } else if (change.before.exists && change.after.exists) {
+      // Updating existing document : Do nothing
+    } else if (!change.after.exists) {
+      // Deleting document : subtract one from count
+      fdb
+        .collection("meta")
+        .doc("boards")
+        .update({ count: admin.firestore.FieldValue.increment(-1) });
+    }
+
+    // return;
+  });
+
+// exports.increCnt = functions.firestore
+//   .document("boards/{bidzzz}")
+//   .onWrite(async (sn, context) => {
+//     // fdb.collection("meta").doc("boards").set({ count: 1 });
+//     admin.firestore.FieldValue;
+//     FieldValue;
+//     // console.log("zzzzzzzzzzzzzzzzz");
+//     // console.log(admin.firestore.FieldValue.increment(1));
+//     try {
+//       fdb
+//         .collection("meta")
+//         .doc("boards")
+//         .update("count", admin.firestore.FieldValue.increment(1));
+//     } catch (e) {
+//       fdb.collection("meta").doc("boards").set({ count: 1 });
+//     }
+//   });
+
+// exports.decreCnt = functions.firestore
+//   .document("boards/{bidzzz}")
+//   .onDelete(async (sn, context) => {
+//     fdb
+//       .collection("meta")
+//       .doc("boards")
+//       .update("count", admin.firestore.FieldValue.increment(-1));
+//   });

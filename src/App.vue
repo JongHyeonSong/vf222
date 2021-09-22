@@ -69,7 +69,6 @@ export default {
         {
           icon: "mdi-account-box-multiple-outline",
           title: "xxxffffdsf",
-          to: "/xxx",
         },
       ],
       title: "title",

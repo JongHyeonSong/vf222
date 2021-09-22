@@ -17,7 +17,6 @@ import {
 import * as firebase from "firebase/database";
 
 import * as auth from "firebase/auth";
-import "firebase/firebase-firestore";
 
 import {
   getAuth,
