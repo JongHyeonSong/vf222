@@ -40,6 +40,12 @@
 
 <script>
 const KEY_WORD = "site";
+
+import { getDatabase, ref, set } from "firebase/database";
+getDatabase;
+ref;
+set;
+
 export default {
   props: ["title"],
 
@@ -61,9 +67,25 @@ export default {
     openDialog() {
       this.dialog = true;
     },
-    save() {
-      this.$firebase.writeObj(KEY_WORD + "/title", this.text);
-      this.dialog = false;
+    async save() {
+      const db = getDatabase();
+      const _ref = ref(db, KEY_WORD + "/title");
+
+      try {
+        // set(_ref, data).then((res) => {
+        //   console.log("res: ", res);
+        // });
+        const re = await set(_ref, this.text);
+        re;
+      } finally {
+        this.dialog = false;
+      }
+      // this.$firebase.writeObj(KEY_WORD + "/title", this.text);
+
+      // try {
+      // } finally {
+      //   this.dialog = false;
+      // }
     },
   },
 };

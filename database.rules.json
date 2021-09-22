@@ -1,6 +1,8 @@
 {
   "rules": {
     ".read": "now < 1634655600000",
-    ".write": "now < 1634655600000"
+    "site":{
+      ".write": "root.child('users').child(auth.uid).child('level').val() == 0"
+    }
   }
 }

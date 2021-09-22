@@ -17,6 +17,8 @@ import {
 import * as firebase from "firebase/database";
 
 import * as auth from "firebase/auth";
+import "firebase/firebase-firestore";
+
 import {
   getAuth,
   signInWithPopup,
@@ -46,9 +48,20 @@ const app = initializeApp(firebaseConfig);
 const fireStore = getFirestore(app);
 const db = getDatabase();
 
-function writeObj(root, data) {
+async function writeObj(root, data) {
   const _ref = ref(db, root);
-  set(_ref, data);
+
+  try {
+    // set(_ref, data).then((res) => {
+    //   console.log("res: ", res);
+    // });
+    const re = await set(_ref, data);
+  } catch (er) {
+    debugger;
+  } finally {
+    debugger;
+    33;
+  }
 }
 
 const dbRef = ref(db);
