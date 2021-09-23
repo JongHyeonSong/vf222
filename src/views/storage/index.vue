@@ -45,23 +45,21 @@ export default {
   },
   methods: {
     saveFile(e) {
-      debugger;
-      let url = urlParser(this.url, true);
-      // const file = e.target.files[0];
+      const file = e.target.files[0];
 
-      // const storage = getStorage();
-      // const storageRef = ref(storage, "some-childs.jpg");
-      // const metadata = {
-      //   contentType: "image/jpeg",
-      // };
+      const storage = getStorage();
+      const storageRef = ref(storage, "some-childs.jpg");
+      const metadata = {
+        contentType: "image/jpeg",
+      };
       // 'file' comes from the Blob or File API
-      // uploadBytes(storageRef, file, metadata).then((snapshot) => {
-      //   getDownloadURL(snapshot.ref).then((dURL) => {
-      //     console.log(dURL);
-      //     this.url = dURL;
-      //   });
-      //   console.log("Uploaded a blob or file!");
-      // });
+      uploadBytes(storageRef, file, metadata).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((dURL) => {
+          console.log(dURL);
+          this.url = dURL;
+        });
+        console.log("Uploaded a blob or file!");
+      });
     },
     async read() {
       let url = urlParser(this.url, true);
