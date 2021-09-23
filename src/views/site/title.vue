@@ -71,16 +71,18 @@ export default {
       const db = getDatabase();
       const _ref = ref(db, KEY_WORD + "/title");
 
-      try {
-        // set(_ref, data).then((res) => {
-        //   console.log("res: ", res);
-        // });
-        const re = await set(_ref, this.text);
-        re;
-      } finally {
-        this.dialog = false;
-      }
-      // this.$firebase.writeObj(KEY_WORD + "/title", this.text);
+      // try {
+      //   // set(_ref, data).then((res) => {
+      //   //   console.log("res: ", res);
+      //   // });
+      //   const re = await set(_ref, this.text);
+      //   re;
+      // } finally {
+      //   this.dialog = false;
+      // }
+
+      // 여기서 서스펜드를 걸어줘야 뷰가 캐치한다
+      await this.$firebase.writeObj(KEY_WORD + "/title", this.text);
 
       // try {
       // } finally {

@@ -25,6 +25,12 @@ const routes = [
     name: "board",
     component: () => import("../views/board/"),
   },
+
+  {
+    path: "/storage",
+    name: "storage",
+    component: () => import("../views/storage/"),
+  },
 ];
 
 const router = new VueRouter({

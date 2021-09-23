@@ -55,8 +55,6 @@ async function writeObj(root, data) {
     //   console.log("res: ", res);
     // });
     const re = await set(_ref, data);
-  } catch (er) {
-    debugger;
   } finally {
     debugger;
     33;
