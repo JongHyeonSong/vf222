@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-
+// import Error from '../views/error.v'
 Vue.use(VueRouter);
 
 const routes = [
@@ -20,21 +20,26 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
 
-  {
-    path: "/board",
-    name: "board",
-    component: () => import("../views/board/"),
-  },
+  // {
+  //   path: "/board",
+  //   name: "board",
+  //   component: () => import("../views/board/"),
+  // },
 
   {
-    path: "/storage",
-    name: "storage",
-    component: () => import("../views/storage/"),
+    path: "/:collection/:docc/",
+    name: "collection-docc",
+    component: () => import("../views/renderer.vue"),
   },
   {
-    path: "/editor",
-    name: "editor",
-    component: () => import("../views/editor/"),
+    path: "/:collection/:docc/:action",
+    name: "collection-docc-action",
+    component: () => import("../views/renderer.vue"),
+  },
+  {
+    path: "*",
+    name: "Error",
+    component: () => import("../views/error.vue"),
   },
 ];
 

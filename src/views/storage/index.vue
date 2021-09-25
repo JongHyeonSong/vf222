@@ -70,7 +70,7 @@ export default {
           (a, b) => a + b[0] + "=" + b[1] + "&",
           "?"
         );
-      debugger;
+      // debugger;
       const r = await axios.get("/fb" + url);
 
       console.log(r);

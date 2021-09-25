@@ -56,7 +56,6 @@ async function writeObj(root, data) {
     // });
     const re = await set(_ref, data);
   } finally {
-    debugger;
     33;
   }
 }
@@ -75,7 +74,6 @@ async function readObj(root) {
 function myfn(domain) {
   return new Promise((res, rej) => {
     onValue(ref(db, domain), (sn) => {
-      debugger;
       res(sn);
     });
   });
