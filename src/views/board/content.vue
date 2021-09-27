@@ -21,13 +21,18 @@
       <v-text-field label="article" v-model="articleText"></v-text-field>
       <v-btn @click="articleWrite">articleWrite</v-btn>
     </v-form>
+    <v-card>
+      <board-article :docc="docc" :cnt="info.count"></board-article>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 import { doc, getFirestore, onSnapshot, query } from "@firebase/firestore";
+import BoardArticle from "./article/article.vue";
 export default {
   props: ["docc"],
+  components: { BoardArticle },
   data() {
     return {
       articleText: "",

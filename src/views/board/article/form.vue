@@ -1,24 +1,28 @@
 <template>
-  <v-card>
-    board form
-    <h3>게시판 \내부 아티클 정보작성폼</h3>
-    <h3>게시판 \내부 아티클 정보작성폼</h3>
-    <h3>게시판 \내부 아티클 정보작성폼</h3>
-    <v-form>
-      <v-text-field v-model="form.title" label="제목"></v-text-field>
-      <v-text-field v-model="form.content" label="제zz목"></v-text-field>
-      <!-- <editor :initialValue="form.description" /> -->
-      <editor ref="editor" />
+  <div>
+    <v-btn @click="back">back</v-btn>
 
-      <!-- <v-text-field
+    <v-card>
+      board form
+      <h3>게시판 \내부 아티클 정보작성폼</h3>
+      <h3>게시판 \내부 아티클 정보작성폼</h3>
+      <h3>게시판 \내부 아티클 정보작성폼</h3>
+      <v-form>
+        <v-text-field v-model="form.title" label="제목"></v-text-field>
+        <v-text-field v-model="form.content" label="제zz목"></v-text-field>
+        <!-- <editor :initialValue="form.description" /> -->
+        <editor ref="editor" />
+
+        <!-- <v-text-field
         v-model="form.description"
         label="form.description"
       ></v-text-field> -->
-      <v-btn @click="create" color="success">create</v-btn>
-      <span>{{ hi }}</span>
-    </v-form>
-    <span>{{ articleId }}</span>
-  </v-card>
+        <v-btn @click="create" color="success">create</v-btn>
+        <span>{{ hi }}</span>
+      </v-form>
+      <span>{{ articleId }}</span>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -91,6 +95,11 @@ export default {
   },
 
   methods: {
+    back() {
+      var url =
+        "/" + this.$route.params.collection + "/" + this.$route.params.docc;
+      this.$router.push(url);
+    },
     subscribe() {
       if (this.articleId === "") return;
       this.unsubscribe?.();
@@ -135,6 +144,7 @@ export default {
           title: this.form.title,
           updatedAt: createdAt,
           dUrl,
+          id,
         };
 
         const db = getFirestore();
@@ -147,14 +157,14 @@ export default {
           doc.commentCount = 0;
 
           // Set the value of 'NYC'
-          const nycRef = doc(getFirestore(), "boards", "ar1", "ww", id);
+          const nycRef = doc(getFirestore(), "boards", this.docc, "ww", id);
           batch.set(nycRef, docForm);
 
           // Update the population of 'SF'
           const sfRef = doc(db, "boards", "keeee");
           batch.update(sfRef, { population: 1000003 });
 
-          const updtFieldVal = doc(db, "boards", "ar1");
+          const updtFieldVal = doc(db, "boards", this.docc);
 
           batch.update(updtFieldVal, {
             count: increment(1),
@@ -162,7 +172,7 @@ export default {
 
           await batch.commit();
         } else {
-          const nycRef = doc(getFirestore(), "boards", "ar1", "ww", id);
+          const nycRef = doc(getFirestore(), "boards", this.docc, "ww", id);
           batch.set(nycRef, docForm);
         }
       } else {
