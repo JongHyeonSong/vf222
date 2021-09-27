@@ -17,15 +17,20 @@
         </div>
       </v-alert>
     </v-card-text>
+    <v-form>
+      <v-text-field label="article" v-model="articleText"></v-text-field>
+      <v-btn @click="articleWrite">articleWrite</v-btn>
+    </v-form>
   </v-container>
 </template>
 
 <script>
-import { doc, getFirestore, onSnapshot } from "@firebase/firestore";
+import { doc, getFirestore, onSnapshot, query } from "@firebase/firestore";
 export default {
   props: ["docc"],
   data() {
     return {
+      articleText: "",
       unsubscribe: null,
       info: {
         title: "info-title",
@@ -65,7 +70,13 @@ export default {
       );
     },
     write() {
-      this.$router.push(this.$route.path + "/write");
+      this.$router.push(this.$route.path + "/board-write");
+    },
+    articleWrite() {
+      this.$router.push({
+        path: this.$route.path + "/article-write",
+        query: { articleId: "" },
+      });
     },
   },
 };

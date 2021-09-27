@@ -6,10 +6,15 @@
     :docc="docc"
   ></board-content>
   <board-form
-    v-else-if="collection === 'boards'"
+    v-else-if="collection === 'boards' && action === 'board-write'"
     :docc="docc"
     :action="action"
   ></board-form>
+  <board-article-form
+    v-else-if="collection === 'boards' && action === 'article-write'"
+    :docc="docc"
+    :action="action"
+  ></board-article-form>
   <!-- <page-index v-else-if="collection === 'page' && docc === 'list'"></page-index>
   <page-content
     v-else-if="collection === 'page' && !action"
@@ -29,6 +34,7 @@
 import BoardIndex from "./board/index"; //board List
 import BoardContent from "./board/content"; //board detail
 import BoardForm from "./board/form.vue"; // board create/update
+import BoardArticleForm from "./board/article/form.vue"; // board create/update
 
 // import PageIndex from "./page/index.vue";
 // import PageContent from "./page/content.vue";
@@ -37,6 +43,7 @@ import BoardForm from "./board/form.vue"; // board create/update
 export default {
   components: {
     BoardForm,
+    BoardArticleForm,
     // PageForm,
     BoardIndex,
     BoardContent,

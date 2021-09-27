@@ -60,7 +60,7 @@ async function writeObj(root, data) {
   }
 }
 
-const dbRef = ref(db);
+// const dbRef = ref(db);
 
 async function readObj(root) {
   const snapshot = await get(child(ref(db), root)).catch((err) => {

@@ -18,10 +18,12 @@
 <script>
 import {
   doc,
-  getFirestore,
+  getFire,
+  store,
   onSnapshot,
   setDoc,
   onSnapshotsInSync,
+  getFirestore,
 } from "@firebase/firestore";
 export default {
   // props: ["doc", "prt"],
@@ -32,7 +34,6 @@ export default {
         cat: "11",
         title: "12",
         description: "c",
-        createdAt: new Date(),
       },
       exists: false,
       loading: false,
@@ -68,6 +69,7 @@ export default {
       this.unsubscribe = onSnapshot(
         docRef,
         function (snn) {
+          debugger;
           if (snn.exists()) this.form = snn.data();
         }.bind(this),
         (err) => {
@@ -77,7 +79,12 @@ export default {
     },
     async create() {
       const docc = this.docc;
-      const form = this.form;
+      const form = {
+        ...this.form,
+
+        createdAt: new Date(),
+        count: 0,
+      };
 
       const docRef = doc(getFirestore(), "boards", docc);
       const sn = await setDoc(docRef, form);
