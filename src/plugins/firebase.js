@@ -4,7 +4,9 @@ import { initializeApp } from "firebase/app";
 
 // import { getAnalytics } from "firebase/analytics";
 
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+// import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
+import { doc, getFirestore, onSnapshot, query } from "firebase/firestore";
+
 import {
   getDatabase,
   ref,
@@ -142,21 +144,28 @@ function signOutG() {
     });
 }
 
+let unsub = null;
 !(function () {
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      store.commit("setFireUser", user);
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      // ...
-    } else {
-      // User is signed out
-      // ...
-    }
+  onAuthStateChanged(getAuth(), (fu) => {
+    debugger;
+    store.commit("setFireUser", fu);
+    unsub?.();
+    if (!fu) return store.commit("setUser", null);
+
+    !(function (fu) {
+      const docRef = doc(getFirestore(), "users", fu.uid);
+      unsub = onSnapshot(
+        docRef,
+        (doc) => {
+          debugger;
+          doc.exists() && store.commit("setUser", doc.data());
+        },
+        console.error
+      );
+    })(fu);
   });
 })();
+
 Vue.prototype.$firebase_ = firebase;
 
 Vue.prototype.$firebase = {

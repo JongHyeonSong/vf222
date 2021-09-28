@@ -24,7 +24,7 @@ import {
   setDoc,
   onSnapshotsInSync,
   getFirestore,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 export default {
   // props: ["doc", "prt"],
 

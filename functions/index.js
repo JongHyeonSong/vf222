@@ -4,7 +4,7 @@ const functions = require("firebase-functions");
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./key.json");
-// const { FieldValue, collection } = require("@firebase/firestore/dist/lite");
+// const { FieldValue, collection } = require("firebase/firestore/dist/lite");
 
 const defaultApp = admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -48,24 +48,27 @@ exports.makeUppercase = functions.firestore
 const db = admin.database();
 const fdb = admin.firestore();
 
-exports.createUser = functions.auth.user().onCreate((user) => {
+exports.createUser = functions.auth.user().onCreate(async (user) => {
   const { uid, email, displayName, photoURL } = user;
+  const time = new Date();
+
   const u = {
     email,
     displayName,
     photoURL,
-    createdAt: new Date().getMilliseconds(), //rtdb는 new Date()가 안먹는
+    createdAt: time, //rtdb는 new Date()가 안먹는
     level: email === functions.config().admin.email ? 0 : 5,
   };
-  console.log(u);
 
-  db.ref("users").child(uid).set(u);
+  await fdb.collection("users").doc(uid).set(u);
+  u.createdAt = time.getTime();
+  await db.ref("users").child(uid).set(u);
 });
 
-exports.deleteUser = functions.auth.user().onDelete((user) => {
+exports.deleteUser = functions.auth.user().onDelete(async (user) => {
   const { uid } = user;
-  db.ref("happy").child(uid).set("zz");
-  db.ref("users").child(uid).remove();
+  await db.ref("users").child(uid).remove();
+  await fdb.collection("users").doc(uid).delete(); // fireStore는 delete
 });
 
 exports.documentWriteListener = functions.firestore

@@ -31,7 +31,7 @@ import {
   onSnapshot,
   query,
   startAt,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 
 export default {
   props: ["cnt", "docc"],
