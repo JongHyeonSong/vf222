@@ -69,7 +69,6 @@ export default {
         (doc) => {
           if (!doc.exists()) return this.write();
           _this.info = doc.data();
-          _this.info.createdAt = _this.info.createdAt.toDate();
         },
         (err) => {}
       );

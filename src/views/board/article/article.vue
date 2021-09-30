@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-unused-components */
 <template>
   <div>
     <v-data-table
@@ -10,6 +11,9 @@
       item-key="id"
       loading="true"
     >
+      <template v-slot:item.updatedAt="{ item }">
+        <display-time :time="item.updatedAt" />
+      </template>
     </v-data-table>
     <!-- <h3>{{ items }}</h3> -->
     <!-- <h3>{{ docc }}</h3> -->
@@ -33,7 +37,10 @@ import {
   startAt,
 } from "@firebase/firestore";
 
+import DisplayTime from "../../../components/display-time..vue";
 export default {
+  // eslint-disable-next-line vue/no-unused-components
+  components: { DisplayTime },
   props: ["cnt", "docc"],
   data() {
     return {
