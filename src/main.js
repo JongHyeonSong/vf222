@@ -7,12 +7,16 @@ import "./plugins/firebase";
 import "./plugins/editor";
 import "./error";
 import "./plugins/moment";
+import VueCompositionAPI from "@vue/composition-api";
+
 // Vue.config.productionTip = false;
 
 // Vue.config.errorHandler = (err) => {
 //   console.log("handler@@@", err);
 // };
 // Vue.config.errorHandler(new Error(), Vue, "hi");
+
+Vue.use(VueCompositionAPI);
 
 new Vue({
   router,

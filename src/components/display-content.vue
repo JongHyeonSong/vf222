@@ -18,6 +18,9 @@
 import urlParser from "url-parse";
 
 import axios from "axios";
+import { doc, getFirestore, increment, updateDoc } from "@firebase/firestore";
+import useSWRV from "swrv";
+
 export default {
   props: ["item"],
   data() {
@@ -47,9 +50,24 @@ export default {
           "?"
         );
       console.log(this.item.dUrl);
-      axios.get("/fb" + url).then(({ data }) => {
-        this.content = data;
-      });
+
+      const fether = () => axios("/fb" + url).then((res) => res.data);
+      const { data, error } = useSWRV("/api/user", fether);
+
+      console.log(data);
+      // axios.get("/fb" + url).then(({ data }) => {
+      //   this.content = data;
+      //   const docRef = doc(
+      //     getFirestore(),
+      //     "boards",
+      //     this.$route.params.docc,
+      //     "ww",
+      //     this.item.id
+      //   );
+      //   updateDoc(docRef, { cnt: increment(1) }).then((res) => {
+      //     console.log("cnt UP@@", res);
+      //   });
+      // });
     },
   },
 };

@@ -59,6 +59,7 @@ export default {
       headers: [
         { value: "updatedAt", text: "time" },
         { value: "title", text: "제목" },
+        { value: "cnt", text: "조회수" },
         { value: "id", text: "id", sortable: false },
       ],
       options: {
