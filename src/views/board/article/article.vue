@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-unused-components */
 <template>
   <div>
     <v-data-table
@@ -10,10 +11,22 @@
       item-key="id"
       loading="true"
     >
+      <template v-slot:item.updatedAt="{ item }">
+        <display-time :time="item.updatedAt" />
+      </template>
+      <template v-slot:item.title="{ item }">
+        <a @click="openDialog(item)">
+          {{ item.title }}
+        </a>
+      </template>
     </v-data-table>
     <!-- <h3>{{ items }}</h3> -->
     <!-- <h3>{{ docc }}</h3> -->
     <h3>{{ cnt }}</h3>
+
+    <v-dialog v-if="selectedItem" v-model="dialog">
+      <display-content @close="dialog = false" :item="selectedItem" />
+    </v-dialog>
   </div>
 </template>
 
@@ -33,10 +46,16 @@ import {
   startAt,
 } from "firebase/firestore";
 
+import DisplayTime from "../../../components/display-time..vue";
+import DisplayContent from "../../../components/display-content.vue";
 export default {
+  // eslint-disable-next-line vue/no-unused-components
+  components: { DisplayTime, DisplayContent },
   props: ["cnt", "docc"],
   data() {
     return {
+      selectedItem: "",
+      dialog: true,
       headers: [
         { value: "updatedAt", text: "time" },
         { value: "title", text: "제목" },
@@ -64,6 +83,10 @@ export default {
     },
   },
   methods: {
+    openDialog(item) {
+      this.selectedItem = item;
+      this.dialog = true;
+    },
     subscribe(arrow = 0) {
       this.unsubscribe?.();
 
