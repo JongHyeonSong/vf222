@@ -44,7 +44,7 @@ import {
   onSnapshot,
   query,
   startAt,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 
 import DisplayTime from "../../../components/display-time..vue";
 import DisplayContent from "../../../components/display-content.vue";

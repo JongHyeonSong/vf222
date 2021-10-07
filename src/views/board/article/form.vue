@@ -41,14 +41,14 @@ import {
   deleteField,
   updateDoc,
   increment,
-} from "@firebase/firestore";
+} from "firebase/firestore";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadString,
-} from "@firebase/storage";
-import { runTransaction } from "@firebase/firestore";
+} from "firebase/storage";
+import { runTransaction } from "firebase/firestore";
 export default {
   // props: ["doc", "prt"],
 

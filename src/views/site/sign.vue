@@ -5,7 +5,8 @@
     v-if="this.loading"
     :value="20"
   ></v-progress-circular>
-  <v-menu offset-y v-else-if="!$store.state.fireUser">
+  <v-menu offset-y v-else-if="!$store.state.user">
+    <h3>{{ $store.state }}</h3>
     <template v-slot:activator="{ on }">
       <v-btn icon v-on="on"><v-icon>mdi-hail</v-icon></v-btn>
     </template>
@@ -29,7 +30,7 @@
     <template v-slot:activator="{ on }">
       <v-btn icon v-on="on">
         <v-avatar size="32" color="red">
-          <img :src="$store.state.fireUser.photoURL" alt="alt" />
+          <!-- <img :src="$store.state.fireUser.photoURL" alt="alt" /> -->
         </v-avatar>
       </v-btn>
     </template>

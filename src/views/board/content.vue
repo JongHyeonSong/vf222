@@ -1,5 +1,8 @@
 <template>
   <v-container fluid>
+    <span>@@@{{ user }} @@@zz</span>
+
+    <!-- <span>{{ $store.state.user }}</span> -->
     <v-card>
       <v-toolbar color="primary">
         <v-toolbar-title>{{ info.title }}</v-toolbar-title>
@@ -24,11 +27,12 @@
     <v-card>
       <board-article :docc="docc" :cnt="info.count"></board-article>
     </v-card>
+    <v-btn @click="test">test</v-btn>
   </v-container>
 </template>
 
 <script>
-import { doc, getFirestore, onSnapshot, query } from "@firebase/firestore";
+import { doc, getFirestore, onSnapshot, query } from "firebase/firestore";
 import BoardArticle from "./article/article.vue";
 export default {
   props: ["docc"],
@@ -46,6 +50,11 @@ export default {
       prt: "zzzz",
     };
   },
+  computed: {
+    user() {
+      return this.$store.state.user?.displayName;
+    },
+  },
   watch: {
     docc() {
       this.subscribe();
@@ -60,6 +69,9 @@ export default {
   },
 
   methods: {
+    test() {
+      this.$store.commit("setUser", "((((");
+    },
     subscribe() {
       this.unsubscribe?.();
       const _this = this;

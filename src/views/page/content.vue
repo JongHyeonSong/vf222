@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { doc, getFirestore, onSnapshot } from "@firebase/firestore";
+import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 export default {
   props: ["doc"],
   data() {
