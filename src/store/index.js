@@ -18,7 +18,6 @@ export default new Vuex.Store({
       state.fireUser = fu;
     },
     setUser(state, user) {
-      debugger;
       state.user = user;
     },
     setHi(state, text) {

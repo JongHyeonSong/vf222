@@ -145,6 +145,7 @@ export default {
           updatedAt: createdAt,
           dUrl,
           id,
+          cnt: 0,
         };
 
         const db = getFirestore();

@@ -147,7 +147,6 @@ function signOutG() {
 let unsub = null;
 !(function () {
   onAuthStateChanged(getAuth(), (fu) => {
-    debugger;
     store.commit("setFireUser", fu);
     unsub?.();
     if (!fu) return store.commit("setUser", null);
@@ -157,7 +156,6 @@ let unsub = null;
       unsub = onSnapshot(
         docRef,
         (doc) => {
-          debugger;
           doc.exists() && store.commit("setUser", doc.data());
         },
         console.error

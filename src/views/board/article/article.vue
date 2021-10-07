@@ -15,9 +15,7 @@
         <display-time :time="item.updatedAt" />
       </template>
       <template v-slot:item.title="{ item }">
-        <a @click="openDialog(item)">
-          {{ item.title }}
-        </a>
+        <a @click="openDialog(item)"> {{ item.title }}wow </a>
       </template>
     </v-data-table>
     <!-- <h3>{{ items }}</h3> -->
