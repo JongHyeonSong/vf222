@@ -58,6 +58,7 @@ export default {
         { value: "updatedAt", text: "time" },
         { value: "title", text: "제목" },
         { value: "cnt", text: "조회수" },
+        { value: "commentCount", text: "댓글수" },
         { value: "id", text: "id", sortable: false },
       ],
       options: {

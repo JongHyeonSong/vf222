@@ -12,6 +12,7 @@
         <v-progress-circular :value="20" indeterminate></v-progress-circular>
       </v-container>
     </v-card-text>
+    <display-comment :docRefItem="[this.$route.params.docc, this.item.id]" />
   </v-card>
 </template>
 
@@ -30,8 +31,10 @@ import {
 import useSWRV from "swrv";
 import { deleteObject, getStorage, ref } from "@firebase/storage";
 
+import DisplayComment from "../../src/components/display-comment.vue";
 export default {
   props: ["item"],
+  components: { DisplayComment },
   data() {
     return {
       content: "",
@@ -93,6 +96,7 @@ function remove(...li) {
   //   console.log("cnt DOWN!!", res);
   // });
   //위 행동을 아래 배치로 실행
+
   const btResult = batch.update(docRef, { count: increment(-1) });
   console.log("bat resu ", btResult);
 
