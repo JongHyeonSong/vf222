@@ -2,20 +2,30 @@
   <div>
     <v-card>
       <v-card-title>
-        <v-text-field
+        <v-textarea
           v-model="comment"
-          @keypress.enter="save"
+          auto-grow
+          clearable
+          @keydown.ctrl.enter="save"
           hide-details=""
           outlined
+          dense
+          rows="3"
           label="댓글작성"
-        ></v-text-field>
+        >
+          <v-icon @click="test" slot="append" large color="primary"
+            >mdi-send</v-icon
+          >
+        </v-textarea>
       </v-card-title>
       <template v-for="(item, i) in items">
         <v-list-item :key="item.id">
           <v-list-item-action
             >{{ item.user.displayName }} no - {{ i + 1 }}</v-list-item-action
           >
-          <v-list-item-subtitle> {{ item.comment }}</v-list-item-subtitle>
+          <v-list-item-subtitle style="white-space: pre-wrap">
+            {{ item.comment }}</v-list-item-subtitle
+          >
           <v-list-item-subtitle>
             <display-time :time="item.createdAt"></display-time>
           </v-list-item-subtitle>
@@ -23,7 +33,7 @@
         <v-divider :key="i"></v-divider>
       </template>
       <v-list-item v-if="moreFlag">
-        <v-btn @click="more">see more</v-btn>
+        <v-btn v-intersect="onIntersect" @click="more">see more</v-btn>
       </v-list-item>
     </v-card>
   </div>
@@ -43,6 +53,7 @@ import {
 } from "@firebase/firestore";
 
 import DisplayTime from "../components/display-time..vue";
+import { last } from "loadsh";
 export default {
   props: ["docRefItem"],
   components: { DisplayTime },
@@ -52,10 +63,17 @@ export default {
       items: [],
       limit: 2,
       moreFlag: true,
+      lastDoc: "",
     };
   },
 
   methods: {
+    test() {
+      console.log(44);
+    },
+    onIntersect(entires, observer, isIntersecting) {
+      if (isIntersecting) this.more();
+    },
     more() {
       getDoc(this.docRef).then((sn) => {
         const commentCount = sn.data().commentCount;
@@ -84,6 +102,7 @@ export default {
 
             return item;
           });
+          this.lastDoc = last(this.items);
         },
         (err) => {
           console.error(err);
@@ -145,4 +164,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.comment {
+  white-space: pre-wrap;
+}
+</style>
