@@ -4,17 +4,7 @@
   "scripts": {
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
-    "start": "npm run shell",
-    "logs": "firebase functions:log",
-    "deploy": "firebase deploy",
-    "deploy:db": "firebase deploy --only database",
-    "deploy:fn": "firebase deploy --only functions",
-    "deploy:fs": "firebase deploy --only firestore",
-    "deploy:hs": "firebase deploy --only hosting",
-    "deploy:st": "firebase deploy --only storage",
-    "predeploy": "npm run build",
-    "predeploy:hs": "npm run build",
-    "serve:fn": "firebase serve --only functions"
+    "start": "npm run shell"
   },
   "engines": {
     "node": "12"

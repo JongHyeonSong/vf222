@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="dark" dark>
+      <v-btn @click="test">zdsf</v-btn>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <site-title :title="site.title"></site-title>
@@ -31,6 +32,7 @@ import SiteTitle from "@/views/site/title";
 import SiteFooter from "@/views/site/footer";
 import SiteMenu from "@/views/site/menu";
 import SiteSign from "@/views/site/sign";
+import { getStorage, ref, uploadString } from "@firebase/storage";
 
 const KEY_WORD = "site";
 export default {
@@ -77,6 +79,14 @@ export default {
   }),
 
   methods: {
+    test(ev) {
+      const storageRef = ref(getStorage(), "boards/tt/" + 1234567890123456);
+
+      console.log(33);
+      uploadString(storageRef, "hell").then((res) => {
+        console.log("uplo SUC@@");
+      });
+    },
     subscribe() {
       const _this = this;
       this.$firebase.readObjRsp(

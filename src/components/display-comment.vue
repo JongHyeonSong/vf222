@@ -91,7 +91,6 @@ export default {
       this.unsubscribe = onSnapshot(
         queryRef,
         (sn) => {
-          console.log(sn);
           if (sn.empty) return (this.items = []);
 
           this.items = sn.docs.map((doc) => {
