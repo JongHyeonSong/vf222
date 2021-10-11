@@ -7,7 +7,7 @@
       <v-toolbar color="primary">
         <v-toolbar-title>{{ info.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon color="success"><v-icon>mdi-pen-plus</v-icon></v-btn>
+        <v-btn icon @click="write"><v-icon>mdi-pen-plus</v-icon></v-btn>
       </v-toolbar>
     </v-card>
     <v-card-text v-if="info.createdAt">
@@ -20,6 +20,12 @@
         </div>
       </v-alert>
     </v-card-text>
+    <v-card>
+      <v-btn :color="liked ? 'red' : 'black'" icon @click="toggleLike"
+        ><v-icon>mdi-thumb-up</v-icon></v-btn
+      >
+      <span>{{ info.likeCount }}zz</span>
+    </v-card>
     <v-form>
       <v-text-field label="article" v-model="articleText"></v-text-field>
       <v-btn @click="articleWrite">articleWrite</v-btn>
@@ -32,7 +38,17 @@
 </template>
 
 <script>
-import { doc, getFirestore, onSnapshot, query } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  getFirestore,
+  increment,
+  onSnapshot,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import BoardArticle from "./article/article.vue";
 export default {
   props: ["docc"],
@@ -45,12 +61,17 @@ export default {
         title: "info-title",
         createdAt: new Date("2020-01-01"),
         updatedAt: new Date("2020-01-01"),
+        likeCount: 0,
+        likeUids: [],
       },
       loading: false,
       prt: "zzzz",
     };
   },
   computed: {
+    liked() {
+      return this.info.likeUids.includes(this.$store.state.fireUser?.uid);
+    },
     user() {
       return this.$store.state.user?.displayName;
     },
@@ -69,6 +90,21 @@ export default {
   },
 
   methods: {
+    toggleLike() {
+      const docRef = doc(getFirestore(), "boards", this.docc);
+      updateDoc(
+        docRef,
+        this.info.likeUids.includes(this.$store.state.fireUser.uid)
+          ? {
+              likeCount: increment(-1),
+              likeUids: arrayRemove(this.$store.state.fireUser.uid),
+            }
+          : {
+              likeCount: increment(1),
+              likeUids: arrayUnion(this.$store.state.fireUser.uid),
+            }
+      );
+    },
     test() {
       this.$store.commit("setUser", "((((");
     },
@@ -86,6 +122,7 @@ export default {
       );
     },
     write() {
+      debugger;
       this.$router.push(this.$route.path + "/board-write");
     },
     articleWrite() {

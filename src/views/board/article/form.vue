@@ -146,6 +146,8 @@ export default {
           dUrl,
           id,
           cnt: 0,
+          likeCount: 0,
+          likeUids: [],
         };
 
         const db = getFirestore();
