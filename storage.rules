@@ -9,10 +9,11 @@ service firebase.storage {
         allow read: if true
         allow write: if 1==1 
           && request.auth!=null 
-          && request.resource.size < 5 // *1024 * 1024
+          && articleId.split("-")[1] == request.auth.uid + ".md" //본인만 글을쓸수있음
           && request.resource.contentType.matches('application/octet-stream')
-          && (resource == null || request.resource.contentType == resource.contentType)
-          && articleId.size() == 16 // 글자 길이
+          //&& (resource == null || request.resource.contentType == resource.contentType) 안되는데 왜안되는지모르겟음
+          //&& request.resource.size < 5 // *1024 * 1024
+          //&& articleId.size() == 16 // 파일이름의 글자 길이
       }
     }
   }

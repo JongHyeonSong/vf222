@@ -132,12 +132,15 @@ export default {
       if (!this.articleId) {
         const createdAt = new Date();
         const id = createdAt.getTime().toString();
-
+        const fn = `${id}-${this.$store.state.fireUser.uid}.md`;
         const storage = getStorage();
-        const storageRef = ref(getStorage(), "boards/" + id + "some-child.md");
+        const storageRef = ref(getStorage(), "boards/" + this.docc + "/" + fn);
         const md = this.$refs.editor.invoke("getMarkdown");
 
-        const sn = await uploadString(storageRef, md);
+        const sn = await uploadString(storageRef, md).catch((err) => {
+          err;
+          debugger;
+        });
         const dUrl = await getDownloadURL(sn.ref);
 
         const docForm = {
@@ -172,8 +175,9 @@ export default {
           batch.update(updtFieldVal, {
             count: increment(1),
           });
-
-          await batch.commit();
+          await batch.commit().catch((err) => {
+            debugger;
+          });
         } else {
           const nycRef = doc(getFirestore(), "boards", this.docc, "ww", id);
           batch.set(nycRef, docForm);
