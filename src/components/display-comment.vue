@@ -67,6 +67,11 @@ export default {
     };
   },
 
+  watch: {
+    docRefItem() {
+      this.subscribe();
+    },
+  },
   methods: {
     test() {
       console.log(44);

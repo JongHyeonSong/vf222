@@ -23,7 +23,12 @@
     <h3>{{ cnt }}</h3>
 
     <v-dialog v-if="selectedItem" v-model="dialog">
-      <display-content @close="dialog = false" :item="selectedItem" />
+      <display-content
+        @go="goo"
+        @close="dialog = false"
+        :item="selectedItem"
+        :docs="docs"
+      />
     </v-dialog>
   </div>
 </template>
@@ -42,6 +47,9 @@ import {
   onSnapshot,
   query,
   startAt,
+  orderBy,
+  getDocs,
+  limitToLast,
 } from "firebase/firestore";
 
 import DisplayTime from "../../../components/display-time..vue";
@@ -65,6 +73,8 @@ export default {
         // itemsPerPage: 5,
       },
       items: [],
+
+      docs: [],
       info: "",
     };
   },
@@ -83,6 +93,52 @@ export default {
     },
   },
   methods: {
+    goo(arrow) {
+      debugger;
+      console.log("arrow: ", arrow);
+
+      const collRef = collection(getFirestore(), "boards", this.docc, "ww");
+
+      // Ec Class
+      const docREF = doc(
+        getFirestore(),
+        "boards",
+        this.docc,
+        "ww",
+        this.selectedItem.id
+      );
+      // Su Class
+      // const docSn = await getDoc(
+      //   doc(getFirestore(), "boards", this.docc, "ww", this.item.id)
+      // );
+
+      const docDuClass = this.docs.find((du) => du.id == this.selectedItem.id);
+
+      let _query = "";
+      if (arrow < 0) {
+        _query = query(
+          collRef,
+          orderBy("updatedAt", "desc"),
+          endBefore(docDuClass),
+          limitToLast(1)
+        );
+      } else {
+        _query = query(
+          collRef,
+          orderBy("updatedAt", "desc"),
+          startAfter(docDuClass),
+          limit(1)
+        );
+      }
+
+      getDocs(_query)
+        .then((res) => {
+          this.selectedItem = res.docs[0].data();
+        })
+        .catch((err) => {
+          debugger;
+        });
+    },
     openDialog(item) {
       this.selectedItem = item;
       this.dialog = true;
@@ -94,6 +150,7 @@ export default {
       const _this = this;
       const _limit = limit(this.options.itemsPerPage);
       let q = "";
+
       if (arrow === -1) {
         q = query(
           collection(getFirestore(), "boards", this.docc, "ww"),

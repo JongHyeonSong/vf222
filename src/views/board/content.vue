@@ -1,8 +1,8 @@
 <template>
-  <v-container fluid>
-    <span>@@@{{ user }} @@@zz</span>
+  <v-container fluid :class="$vuetify.breakpoint.xs && 'pa-0'">
+    <span>@@@{{ user }} @@@@zz</span>
 
-    <!-- <span>{{ $store.state.user }}</span> -->
+    <!-- <span>{{ $store.state.user }}</span> -->gf
     <v-card>
       <v-toolbar color="primary">
         <v-toolbar-title>{{ info.title }}</v-toolbar-title>

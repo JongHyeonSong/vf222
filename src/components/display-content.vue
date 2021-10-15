@@ -5,6 +5,8 @@
     </v-toolbar>
     <v-btn @click="$emit('close')" color="success">text {{ content }} zz</v-btn>
     <v-btn @click="remove(1, $event)" color="success">remove</v-btn>
+    <v-btn @click="$emit('go', 1)" color="success">goNext</v-btn>
+    <v-btn @click="$emit('go', -1)" color="success">goPrev</v-btn>
     <v-card-text>
       <viewer v-if="content" :initialValue="content"></viewer>
 
@@ -21,19 +23,31 @@ import urlParser from "url-parse";
 
 import axios from "axios";
 import {
+  collection,
   deleteDoc,
   doc,
+  endBefore,
+  getDoc,
+  getDocs,
   getFirestore,
   increment,
+  limit,
+  limitToLast,
+  onSnapshot,
+  orderBy,
+  query,
+  startAfter,
   updateDoc,
   writeBatch,
 } from "@firebase/firestore";
 import useSWRV from "swrv";
 import { deleteObject, getStorage, ref } from "@firebase/storage";
+import { head, last } from "loadsh";
 
 import DisplayComment from "../../src/components/display-comment.vue";
+// import { endBefore, startAfter } from "@firebase/database";
 export default {
-  props: ["item"],
+  props: ["item", "docs"],
   components: { DisplayComment },
   data() {
     return {
@@ -42,6 +56,7 @@ export default {
     };
   },
   mounted() {
+    this.item;
     this.content = "";
     this.fetch();
   },
@@ -51,12 +66,21 @@ export default {
       this.fetch();
     },
   },
+  // _query = query(collRef, orderBy("updatedAt", "desc"), limit(1));
 
   reall(...li) {
     console.log(li, "re??");
   },
-
+  computed: {
+    docc() {
+      return this.$route.params.docc;
+    },
+  },
   methods: {
+    // go(tt) {
+    //   tt;
+    //   debugger;
+    // },
     remove: remove,
 
     fetch() {
