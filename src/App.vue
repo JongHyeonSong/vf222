@@ -79,13 +79,16 @@ export default {
   }),
 
   methods: {
-    test(ev) {
-      const storageRef = ref(getStorage(), "boards/tt/" + 1234567890123456);
-
-      console.log(33);
-      uploadString(storageRef, "hell").then((res) => {
-        console.log("uplo SUC@@");
+    async test(ev) {
+      const re = await this.$swal.fire({
+        title: "real 삭제??",
+        text: "삭제 후 못ㅋ함",
+        icon: "error",
+        showCancelButton: true,
       });
+      // throw Error("wer"); //에러로 뺴면 뷰에러핸들러에서 에러토스트
+      // this.$toasted.show("wer"); // 한번뜨면 계속 있는 토스트
+      // this.$toasted.global.notice("zzzz");
     },
     subscribe() {
       const _this = this;
