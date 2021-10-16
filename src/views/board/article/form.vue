@@ -11,7 +11,7 @@
         <v-text-field v-model="form.title" label="제목"></v-text-field>
         <v-text-field v-model="form.content" label="제zz목"></v-text-field>
         <!-- <editor :initialValue="form.description" /> -->
-        <editor ref="editor" />
+        <editor ref="editor" :options="options" />
 
         <!-- <v-text-field
         v-model="form.description"
@@ -47,8 +47,10 @@ import {
   getStorage,
   ref,
   uploadString,
+  uploadBytes,
 } from "firebase/storage";
-import { runTransaction } from "firebase/firestore";
+
+import { imgResizer } from "../../../util/imageCompress";
 export default {
   // props: ["doc", "prt"],
 
@@ -57,11 +59,22 @@ export default {
       form: {
         content: "",
         title: "",
+        images: [],
       },
       exists: false,
       loading: false,
       ref: null,
       hi: "befo",
+
+      options: {
+        language: "ko",
+        hooks: {
+          addImageBlobHook: async (file, cb) => {
+            const url = await this.imageUpload(file);
+            cb(url, "alt_textx");
+          },
+        },
+      },
     };
   },
   watch: {
@@ -95,6 +108,35 @@ export default {
   },
 
   methods: {
+    async imageUpload(file) {
+      const thumbnail = await imgResizer(file);
+      await uploadBytes(
+        ref(getStorage(), "img-thumb/" + thumbnail.size),
+        thumbnail
+      );
+
+      const id = new Date().getTime() + "-" + file.name;
+      const storageRef = ref(getStorage(), "img/" + id);
+      const sn = await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(sn.ref);
+
+      const image = {
+        origin: {
+          name: file.name,
+          size: file.size,
+          id,
+          url,
+        },
+        thumbnail: {
+          size: thumbnail.size,
+          id: "",
+          url: "",
+        },
+      };
+
+      this.form.images.push(image);
+      return url;
+    },
     back() {
       var url =
         "/" + this.$route.params.collection + "/" + this.$route.params.docc;

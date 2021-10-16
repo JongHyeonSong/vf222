@@ -104,3 +104,31 @@ const cityRef = doc(getFirestore(), "boards", "ar1");
 await updateDoc(cityRef, {
 name: deleteField(),
 });
+
+###
+
+query를 사용해서 endBefore나 StartAfter등을 사용할떄
+
+onSnapShot에서 콜백으로 받은
+sn객체(Cu Class)에서
+sn.docs[n](Du Class) 를 인자로 넘기는데
+{...sn.docs[n]}은 인자로 넘겨도 **_절대_** 찾지 못한다
+
+const docRef = doc(getFirestore(), "boards", this.docc, "ww", this.item.id );
+
+docRef(Ec Class)도 사용이 가능하고 -- 안됨 시발;
+
+const docSn = await getDoc(docRef)
+
+에서 docSn(Su Class) 도 사용이 가능하다
+
+startAfter등은 기본적으로 orderBy에 종속적이며 꼭 doc객체를 넣지않아도 된다 아래같이 숫자,문자 하드코딩으로도 구현이 가능하다
+
+orderBy("id", "desc") 라면
+startAfter({id})를 적어주어야 적용이되고
+
+startAfter({createdAt})처럼 다른 내용을 적어도 쿼리되지않는다
+
+1 카테고리별로 게시글볼수있게
+2 최신글은 불꽃마크
+3 v-skeletone으로 데이터가 안왔을때 은빛 로딩 처리
