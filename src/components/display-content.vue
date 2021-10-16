@@ -7,9 +7,11 @@
     <v-btn @click="remove(1, $event)" color="success">remove</v-btn>
     <v-btn @click="$emit('go', 1)" color="success">goNext</v-btn>
     <v-btn @click="$emit('go', -1)" color="success">goPrev</v-btn>
-    <v-card-text>
-      <viewer v-if="content" :initialValue="content"></viewer>
 
+    <hr />
+    <v-card-text>
+      <!-- <viewer class="primary" v-if="content" :initialValue="content" /> -->
+      <div v-if="content" v-html="content"></div>
       <v-container v-else grid-list-xs>
         <v-progress-circular :value="20" indeterminate></v-progress-circular>
       </v-container>
@@ -94,7 +96,10 @@ export default {
         );
       console.log(this.item.dUrl);
       axios.get("/fb" + url).then(({ data }) => {
-        this.content = "" + data;
+        // this.content = "" + data;
+        console.log(this.item.title);
+        this.content = this.item.title;
+
         const docRef = doc(
           getFirestore(),
           "boards",
