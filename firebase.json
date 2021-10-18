@@ -11,10 +11,11 @@
   },
   "hosting": {
     "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      { "source": "/test", "function": "test" },
+      { "source": "/boards/*", "function": "seo" },
+      { "source": "**", "function": "/index.html" }
     ]
   },
   "storage": {
